@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Survey System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./sign.css" />
+</head>
+
+<body>
+    <div class="login-form">
+        <form action="/forgetpwd" method="post">
+            <div class="form-group">
+                <label>Input your Mail address</label>
+                <input type="email" class="form-control" placeholder="Email" required="required" name="email">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block">Send</button>
+            </div>
+            <h5 class="text-center sv_error">
+                <%= error %>
+            </h5>
+        </form>
+    </div>
+</body>
+
+</html>

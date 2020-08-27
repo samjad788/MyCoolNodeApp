@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Survey System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./sign.css" />
+</head>
+
+<body>
+    <div class="login-form">
+        <form action="/signup" method="post">
+            <h2 class="text-center">Sign Up</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Full Name" required="required" name="fname" value="<%= signupForm.fname %>">
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" placeholder="Email" required="required" name="email" value="<%= signupForm.email %>">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="Username" required="required" name="username" value="<%= signupForm.username %>">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" name="password" value="<%= signupForm.password %>">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Confirm Password" required="required" name="cpassword" value="<%= signupForm.cpassword %>">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block">Register</button>
+            </div>
+            <h5 class="text-center sv_error">
+                <%= error %>
+            </h5>
+        </form>
+    </div>
+</body>
+
+</html>

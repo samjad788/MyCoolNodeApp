@@ -1,0 +1,220 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+section {
+    margin: 2em 0;
+}
+
+.page-link {
+    margin: 1em 2em;
+}
+
+.survey-page-header,
+.survey-page-header .sv_main {
+    background-color: #e7e7e7;
+}
+
+.survey-page-header-content {
+    max-width: 80%;
+    margin: auto;
+    padding: 1.5em;
+}
+
+.survey-page-header-content a {
+    color: white;
+    text-decoration: unset;
+}
+
+.sv_main.sv_frame .sv_container .sv_header {
+    padding-top: 2em;
+}
+
+.svd_container .sv_custom_header {
+    display: none;
+}
+
+.sv_main.sv_frame .svd_container .sv_container {
+    max-width: none;
+    padding: unset;
+}
+
+.surveys-list table thead td {
+    font-weight: bold;
+}
+
+.matrix-question {
+    padding: 10px;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.surveyname {
+    color: #ec2626;
+}
+
+.sv_button_link {
+    color: #1ab394;
+    width: 120px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.sv_button_link:hover,
+.sv_button_link:visited:hover {
+    background-color: #1ab394;
+    border-color: #1ab394;
+    color: #fff;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
+.sv_button_link:visited {
+    color: #1ab394;
+}
+
+.sv_button_link.sv_button_delete {
+    color: #ec2626;
+}
+
+.sv_button_link.sv_button_delete:hover {
+    background-color: #ec2626;
+    color: #fff;
+}
+
+#resultsTable td {
+    cursor: pointer;
+}
+
+.sv_body {
+    overflow: auto;
+    padding: 1em 1em 1.6428em 1em;
+}
+
+.sv_header {
+    display: flex;
+}
+
+.userinfodiv {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.userinfodiv {
+    font-size: 25px;
+}
+
+.p-username {
+    margin-bottom: 0px;
+    margin-right: 20px;
+    color: #ec2626;
+    font-size: 1.5em;
+}
+
+.disable-link {
+    pointer-events: none;
+}
+
+table td {
+    vertical-align: middle !important;
+}
+
+a[disabled],
+span[disabled] {
+    opacity: 50%;
+}
+
+.bg-white {
+    background: #fff;
+}
+
+.p-16 {
+    padding: 16px;
+}
+
+.p-7 {
+    padding: 7px;
+}
+
+body {
+    padding-top: 70px;
+}
+
+.navbar-right {
+    margin-right: 0px;
+}
+
+body {
+    margin: 5px;
+}
+
+
+/* Tab Navigation */
+
+.nav-tabs>li>a {
+    background: #DADADA;
+    border-radius: 0;
+    box-shadow: inset 0 -8px 7px -9px rgba(0, 0, 0, .4), -2px -2px 5px -2px rgba(0, 0, 0, .4);
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:hover {
+    background: #F5F5F5;
+    box-shadow: inset 0 0 0 0 rgba(0, 0, 0, .4), -2px -3px 5px -2px rgba(0, 0, 0, .4);
+}
+
+.tab-content {
+    padding-top: 10px;
+}
+
+.vertical-alignment-helper {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.panel-title {
+    padding: 6px 12px;
+}
+
+.container .sv_body {
+    background-color: white;
+    border-top: 2px solid #1ab394;
+}
+
+.sv_window {
+    max-height: 80%;
+    overflow: scroll;
+}
+
+.export-div {
+    margin-top: 10px;
+    position: absolute;
+    right: 10px;
+}
+
+.export-report-div {
+    margin-top: 10px;
+}
+
+svd-splitter {
+    left: 0px !important;
+}
+
+.checkbox_lg {
+    width: 15px;
+    height: 15px;
+}

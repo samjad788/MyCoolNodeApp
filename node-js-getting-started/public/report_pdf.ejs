@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Survey System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/../asset/css/pdf.css" />
+</head>
+
+<body>
+
+    <% for (let question of reportdata) {%>
+        <div>
+            <h3>
+                <%=question.title%>
+            </h3>
+            <% switch (question.type) {
+                case 'rating':
+                case 'boolean':
+                case 'imagepicker':
+                case 'radiogroup' :
+                case 'dropdown' : %>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th width="70%">Answer Choices</th>
+                            <th width="10%">Count</th>
+                            <th width="10%">Percent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < question.choices.length; i++) { %>
+                            <tr>
+                                <td>
+                                    <%= question.choices[i] %>
+                                </td>
+                                <td>
+                                    <%= question.count[i] %>
+                                </td>
+                                <td>
+                                    <%= question.percent[i] %>%
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+                <% break;
+                case 'matrix' : %>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <% for(let choice of question.choices) {%>
+                                    <th colspan="2">
+                                        <%=choice%>
+                                    </th>
+                                    <% } %>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (let row of question.rows) {%>
+                                <tr>
+                                    <td>
+                                        <%= row.title%>
+                                    </td>
+                                    <% for (let [index, ] of question.choices.entries()) {%>
+                                        <td>
+                                            <%= row.percent[index] + "%"%>
+                                        </td>
+                                        <td>
+                                            <%= row.count[index]%>
+                                        </td>
+                                        <% } %>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                    <%  break; }%>
+        </div>
+        <% } %>
+</body>
+
+</html>

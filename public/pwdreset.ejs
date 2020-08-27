@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Survey System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./sign.css" />
+</head>
+
+<body>
+    <div class="login-form">
+        <form action="<%= url %> " method="post">
+            <h2 class="text-center">Password Reset</h2>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Password" required="required" name="password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="Confirm Password" required="required" name="cpassword">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-block">Reset</button>
+            </div>
+            <h5 class="text-center sv_error">
+                <%= error %>
+            </h5>
+        </form>
+        <p class="text-center"><a href="/login">Log In</a></p>
+    </div>
+</body>
+
+</html>

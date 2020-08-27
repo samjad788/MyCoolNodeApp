@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Survey System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/../asset/css/pdf.css" />
+</head>
+
+<body>
+
+    <% for (let [dIndex, data] of tableData.entries()) {%>
+        <div class="page-break">
+            <h3>
+
+                <%='#' + (dIndex + 1).toString()%>
+            </h3>
+            <% for (let [qIndex, question] of tableHeader.entries()) { %>
+                <div class="row question-div">
+                    <% if (question.element.type == "matrix" || question.element.type == "multipletext") { %>
+                        <div class="col-xs-12">
+                            <h4>
+                                <%='Q' + (qIndex + 1).toString()%>
+                                    <%=question.title != ""? question.title : question.name%>
+                            </h4>
+                        </div>
+
+                        <% for (let matrixrow of data[qIndex] ) { %>
+                            <div class="col-xs-12">
+                                <div class="col-xs-6">
+                                    <h4>
+                                        <%=matrixrow.row %>
+                                    </h4>
+                                </div>
+                                <div class="col-xs-6">
+                                    <h4>
+                                        <%=matrixrow.val %>
+                                    </h4>
+                                </div>
+                            </div>
+                            <% } %>
+                                <% } else if (question.element.type == "matrixdropdown") { %>
+                                    <div class="col-xs-12">
+                                        <h4>
+                                            <%='Q' + (qIndex + 1).toString()%>
+                                                <%=question.title != ""? question.title : question.name%>
+                                        </h4>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <table class="table table-striped">
+                                            <% for (let matrixdropdownRow of data[qIndex] ) { %>
+                                                <tr>
+                                                    <% for (let matrixdropdownCol of matrixdropdownRow ) { %>
+                                                        <td>
+                                                            <%=matrixdropdownCol%>
+                                                        </td>
+                                                        <% } %>
+                                                </tr>
+                                                <% } %>
+                                        </table>
+                                    </div>
+                                    <%} else {%>
+                                        <div class="col-xs-6">
+                                            <h4>
+                                                <%='Q' + (qIndex + 1).toString()%>
+                                                    <%=question.title != ""? question.title : question.name%>
+                                            </h4>
+                                        </div>
+
+                                        <div class="col-xs-6">
+                                            <h4>
+                                                <%=data[qIndex]%>
+                                            </h4>
+                                        </div>
+                                        <% } %>
+                </div>
+
+                <% } %>
+        </div>
+        <% } %>
+
+</body>
+
+</html>

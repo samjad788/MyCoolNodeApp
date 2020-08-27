@@ -1,0 +1,43 @@
+{
+    "name": "surveyjs-nodejs",
+    "version": "0.1.0",
+    "engines": {
+        "node": "12.x"
+    },
+    "description": "Sample NodeJS backend for SurveyJS: Survey Library and Survey Creator",
+    "main": "index.js",
+    "scripts": {
+        "start": "npx nodemon  index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/surveyjs/surveyjs-nodejs.git"
+    },
+    "keywords": [
+        "survey",
+        "surveyjs",
+        "service",
+        "nodejs",
+        "survey-creator",
+        "survey-maker",
+        "form-builder"
+    ],
+    "author": "SurveyJS",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/surveyjs/surveyjs-nodejs/issues"
+    },
+    "homepage": "https://github.com/surveyjs/surveyjs-nodejs#readme",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "ejs": "^3.0.1",
+        "ejs-locals": "^1.0.2",
+        "excel4node": "^1.7.2",
+        "express": "^4.16.2",
+        "express-session": "^1.15.6",
+        "mysql": "^2.18.1",
+        "nodemailer": "^6.4.4",
+        "pg-promise": "^7.3.2",
+        "puppeteer": "^2.1.1"
+    }
+}

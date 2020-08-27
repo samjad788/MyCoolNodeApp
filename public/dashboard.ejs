@@ -1,0 +1,264 @@
+<% layout('layout') %>
+    <!-- Modal -->
+    <div class="modal fade" id="folderModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Select Folder</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-striped" id="select_folder_table">
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="linkModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog vertical-align-center">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Survey Link</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p id="survey_link">
+
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sv_body ">
+            <div>
+                <h3>Surveys</h3>
+                <p>
+                    Below you can see the list of available surveys you can edit, run and see the results
+                </p>
+            </div>
+
+            <section>
+                <a class="btn btn-success" <% if (user.p_create) {%> onclick="createSurvey();" <%} else {%> disabled <%}%>>
+                        <span class="glyphicon glyphicon-plus "></span> Add Survey
+                </a>
+            </section>
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active">
+                    <a href="#own" role="tab" data-toggle="tab">
+                        <icon class="glyphicon glyphicon-user"></icon> Own
+                    </a>
+                </li>
+                <li>
+                    <a href="#share" role="tab" data-toggle="tab">
+                        <i class="glyphicon glyphicon-share"></i> Share
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade active in" id="own">
+
+                    <form class="form-inline" action="/folder/create" method="post">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Folder Name" required="required" name="foldername">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-warning">
+                                <span class="glyphicon glyphicon-plus"></span> Create Folder
+                            </button>
+                        </div>
+                    </form>
+                    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                        <% for(let [index, [, folder]] of Object.entries(surveyWithFolder).entries()){%>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-xs-10" role="tab" data-toggle="collapse" data-parent="#accordion" href="#accordian<%=index%>" aria-expanded="true" aria-controls="collapseOne1">
+                                            <h4 class="panel-title">
+                                                <span class="glyphicon glyphicon-folder-open"></span> &nbsp;
+                                                <%=folder.foldername%>
+                                                    <% if(isadmin) {%>
+                                                        /
+                                                        <%=folder.username%>
+                                                            <%}%>
+                                            </h4>
+                                        </div>
+                                        <div class="col-xs-2 text-right">
+                                            <a class="btn btn-danger" onclick="deleteFolder('<%=folder.folderid%>')"><span class="glyphicon glyphicon-trash"></span> </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div id="accordian<%=index%>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                                <% for (let survey of folder.data) { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= survey.name%>
+                                                        </td>
+                                                        <% if(isadmin) {%>
+                                                            <td>
+                                                                <%=survey.uname%>
+                                                            </td>
+                                                            <%}%>
+                                                                <td class="text-center">
+                                                                    <%=survey.responses%>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    <%=survey.cdate%>
+                                                                </td>
+                                                                <td>
+                                                                    <a class="sv_button_link " <% if (user.p_view) {%> href="survey?id=<%=survey.id%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-play"></span> Run </a>
+
+                                                                    <a class="sv_button_link " <% if (user.p_edit) {%> href="survey-creator?id=<%=survey.id%>&name=<%=survey.name%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-edit"></span> Edit </a>
+
+                                                                    <a class="sv_button_link " href="result?id=<%=survey.id%>"><span class="glyphicon glyphicon-list-alt"></span> Results</a>
+
+                                                                    <a class="sv_button_link " href="report?id=<%=survey.id%>"><span class="glyphicon glyphicon-stats"></span> Report </a>
+
+                                                                    <a class="sv_button_link " href="mail?id=<%=survey.id%>"><span class="glyphicon glyphicon-envelope"></span> Email </a>
+
+                                                                    <a class="sv_button_link" onclick="surveyLink('<%=survey.id%>');"><span class="glyphicon glyphicon-link"></span> Link </a>
+
+                                                                    <a class="sv_button_link " href="share?id=<%=survey.id%>"><span class="glyphicon glyphicon-share"></span> <% if(survey.share) {%> UnShare <%} else {%> Share<%}%></a>
+
+                                                                    <a class="sv_button_link" onclick="moveFolder('<%=survey.id%>');"><span class="glyphicon glyphicon-folder-open"></span> Move </a>
+
+                                                                    <a class="sv_button_link " href="survey/settings?id=<%=survey.id%>"><span class="	glyphicon glyphicon-cog"></span> Settings</a>
+                                                                    <span class="sv_button_link sv_button_delete " <% if (user.p_delete) {%> onclick="deleteSurvey('<%=survey.id%>')"<%} else {%> disabled <%}%>><span class="glyphicon glyphicon-trash"></span>                                                                    Delete</span>
+                                                                </td>
+                                                    </tr>
+                                                    <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <%}%>
+                    </div>
+                    <div id="surveys-list " class="surveys-list ">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Survey Name</th>
+
+                                    <% if(isadmin) {%>
+                                        <th>Created By</th>
+                                        <%}%>
+                                            <th>Responses</th>
+                                            <th class="text-center">Date</th>
+                                            <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (let survey of surveyWithoutFolder) { %>
+
+                                    <tr>
+                                        <td>
+                                            <%= survey.name%>
+                                        </td>
+                                        <% if(isadmin) {%>
+                                            <td>
+                                                <%=survey.uname%>
+                                            </td>
+                                            <%}%>
+                                                <td class="text-center">
+                                                    <%=survey.responses%>
+                                                </td>
+                                                <td class="text-center">
+                                                    <%=survey.cdate%>
+                                                </td>
+                                                <td>
+                                                    <a class="sv_button_link " <% if (user.p_view) {%> href="survey?id=<%=survey.id%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-play"></span> Run </a>
+
+                                                    <a class="sv_button_link " <% if (user.p_edit) {%> href="survey-creator?id=<%=survey.id%>&name=<%=survey.name%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-edit"></span> Edit </a>
+
+                                                    <a class="sv_button_link " href="result?id=<%=survey.id%>"><span class="glyphicon glyphicon-list-alt"></span> Results</a>
+
+                                                    <a class="sv_button_link " href="report?id=<%=survey.id%>"><span class="glyphicon glyphicon-stats"></span> Report </a>
+
+                                                    <a class="sv_button_link " href="mail?id=<%=survey.id%>"><span class="glyphicon glyphicon-envelope"></span> Email </a>
+
+                                                    <a class="sv_button_link" onclick="surveyLink('<%=survey.id%>');"><span class="glyphicon glyphicon-link"></span> Link </a>
+
+                                                    <a class="sv_button_link " href="share?id=<%=survey.id%>"><span class="glyphicon glyphicon-share"></span> <% if(survey.share) {%> UnShare <%} else {%> Share<%}%></a>
+
+                                                    <a class="sv_button_link" onclick="moveFolder('<%=survey.id%>');"><span class="glyphicon glyphicon-folder-open"></span> Move </a>
+                                                    <a class="sv_button_link " href="survey/settings?id=<%=survey.id%>"><span class="	glyphicon glyphicon-cog"></span> Settings</a>
+                                                    <span class="sv_button_link sv_button_delete " <% if (user.p_delete) {%> onclick="deleteSurvey('<%=survey.id%>')"<%} else {%> disabled <%}%>><span class="glyphicon glyphicon-trash"></span> Delete</span>
+                                                </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="share">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Survey Name</th>
+                                <th>Created By</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% for (let sharedsurvey of sharedSurveys) { %>
+                                <tr>
+                                    <td>
+                                        <%= sharedsurvey.name%>
+                                    </td>
+                                    <td>
+                                        <%= sharedsurvey.uname%>
+                                    </td>
+                                    <td>
+                                        <a class="sv_button_link " <% if (user.p_view) {%> href="survey?id=<%=sharedsurvey.id%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-play"></span> Run </a>
+                                    </td>
+                                    <td>
+                                        <a class="sv_button_link " href="result?id=<%=sharedsurvey.id%>"><span class="glyphicon glyphicon-list-alt"></span> Results</a>
+                                    </td>
+                                    <td>
+                                        <a class="sv_button_link " href="report?id=<%=sharedsurvey.id%>"><span class="glyphicon glyphicon-stats"></span> Report </a>
+                                    </td>
+                                    <td>
+                                        <a class="sv_button_link " <% if (user.p_copy) {%> href="copy?id=<%=sharedsurvey.id%>" <%} else {%> disabled <%}%>><span class="glyphicon glyphicon-copy"></span> Copy </a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="index.js "></script>

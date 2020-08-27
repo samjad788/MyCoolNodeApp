@@ -1,0 +1,89 @@
+<% layout('layout') -%>
+    <div class="container">
+        <div class="sv_body ">
+            <div>
+                <h3>Users</h3>
+                <p>
+                    Below you can see the list of available users you can edit/delete, change permission.
+                </p>
+            </div>
+            <div>
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Send</th>
+                            <th>Role</th>
+                            <th>Create</th>
+                            <th>Edit</th>
+                            <th>View</th>
+                            <th>Copy</th>
+                            <th>Delete</th>
+                            <th>Delete User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (let user of users) { %>
+                            <tr id="delete-<%=user.id%>">
+                                <td>
+                                    <%=user.uname%>
+                                </td>
+                                <td>
+                                    <%=user.pwd%>
+                                </td>
+                                <td>
+                                    <a class="btn btn-warning" href="user/sendcredential?id=<%=user.id%>">
+                                        <span class="glyphicon glyphicon-send"></span> Send
+                                    </a>
+                                </td>
+                                <td>
+                                    <% if (user.role == 0) {%>
+
+                                        <a class="btn btn-info" href="user/rolechange?id=<%=user.id%>">
+                                            <span class="glyphicon glyphicon-user"></span> Admin
+                                        </a>
+                                        <% } else {%>
+                                            <a class="btn btn-info" href="user/rolechange?id=<%=user.id%>">
+                                                <span class="glyphicon glyphicon-user"></span> User
+                                            </a>
+                                            <% }%>
+                                </td>
+                                <td>
+                                    <a id="p_create-<%=user.id%>" class="btn btn-success" <% if(!user.p_create) {%> disabled = "true" <% }%> onclick="changePermission('p_create', '<%=user.id%>');">
+                                            <span class="glyphicon glyphicon-plus"></span> Create
+                                        </a>
+                                </td>
+                                <td>
+                                    <a id="p_edit-<%=user.id%>" class="btn btn-warning" <% if(!user.p_edit) {%> disabled = "true" <%} %> onclick="changePermission('p_edit', '<%=user.id%>');">
+                                            <span class="glyphicon glyphicon-edit"></span> Edit
+                                        </a>
+                                </td>
+                                <td>
+                                    <a id="p_view-<%=user.id%>" class="btn btn-primary" <% if(!user.p_view) {%> disabled = "true" <%} %> onclick="changePermission('p_view', '<%=user.id%>');">
+                                            <span class="glyphicon glyphicon-play"></span> View
+                                        </a>
+                                </td>
+                                <td>
+                                    <a id="p_copy-<%=user.id%>" class="btn btn-info" <% if(!user.p_copy) {%> disabled = "true" <%} %> onclick="changePermission('p_copy', '<%=user.id%>');">
+                                            <span class="glyphicon glyphicon-copy"></span> Copy
+                                        </a>
+                                </td>
+                                <td>
+                                    <a id="p_delete-<%=user.id%>" class="btn btn-danger" <% if(!user.p_delete) {%> disabled = "true" <%} %> onclick="changePermission('p_delete', '<%=user.id%>');">
+                                            <span class="glyphicon glyphicon-trash"></span> Delete
+                                        </a>
+                                </td>
+                                <td>
+                                    <a class="btn btn-danger" onclick="deleteUser('<%=user.id%>');">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="./permission.js"></script>

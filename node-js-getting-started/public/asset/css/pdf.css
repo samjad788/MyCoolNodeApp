@@ -1,0 +1,9 @@
+.page-break {
+    page-break-after: always;
+}
+
+.question-div {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid gray;
+}

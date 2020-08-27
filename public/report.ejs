@@ -1,0 +1,279 @@
+<% layout('layout') -%>
+    <div class="sv_main sv_frame sv_default_css">
+        <div class="container">
+            <div class="sv_body">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <h3>Survey Report :
+                            <span class="surveyname"><%=surveyname%></span>
+                        </h3>
+                    </div>
+                    <div class="col-xs-4 text-right export-report-div">
+                        <a class="btn btn-primary" href="/report/export/pdf?id=<%=surveyId%>"><span class="fa fa-file-pdf-o"></span> PDF</a>
+                        <a class="btn btn-primary" href="/report/export/excel?id=<%=surveyId%>"><span class="fa fa-file-excel-o"></span> Excel</a>
+                    </div>
+                </div>
+
+                <div class="surveyreport">
+                    <% for (let question of reportdata) { %>
+                        <div class="question">
+                            <h1>
+                                <%= question.title %>
+                            </h1>
+
+                            <% switch (question.type) {
+                                case 'rating':
+                                case 'boolean':
+                                case 'imagepicker':
+                                case 'radiogroup' :
+                                case 'dropdown' : %>
+                                <h5>Total Responses:
+                                    <%=question.total %>
+                                </h5>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="70%">Answer</th>
+                                            <th width="10%">Count</th>
+                                            <th width="10%">Percent</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for (var i = 0; i < question.choices.length; i++) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= question.choices[i] %>
+                                                </td>
+                                                <td>
+                                                    <%= question.count[i] %>
+                                                </td>
+                                                <td>
+                                                    <%= question.percent[i] %>%
+                                                </td>
+                                            </tr>
+                                            <% } %>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-6"><canvas id="line-chart-<%=question.name%>" style="display: block; width: 100%; height: 381px;" class="chartjs-render-monitor"></canvas></div>
+                                    <div class="col-md-6"><canvas id="pai-chart-<%=question.name%>" style="display: block; width: 100%; height: 381px;" class="chartjs-render-monitor"></canvas></div>
+                                </div>
+                                <% break;
+                            case 'matrix' : %>
+                                    <% for (let row of question.rows) { %>
+                                        <div class="matrix-question">
+                                            <h4>
+                                                <%= row.title %>
+                                            </h4>
+                                            <h5>Total Responses:
+                                                <%=row.total %>
+                                            </h5>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="70%">Answer</th>
+                                                        <th width="10%">Count</th>
+                                                        <th width="10%">Percent</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% for (var i = 0; i < question.choices.length; i++) { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= question.choices[i] %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.count[i] %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.percent[i] %>%
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                </tbody>
+                                            </table>
+                                            <div class="row">
+                                                <div class="col-md-6"><canvas id="line-chart-<%=row.name%>" style="display: block; width: 100%; height: 381px;" class="chartjs-render-monitor"></canvas></div>
+                                                <div class="col-md-6"><canvas id="pai-chart-<%=row.name%>" style="display: block; width: 100%; height: 381px;" class="chartjs-render-monitor"></canvas></div>
+                                            </div>
+                                        </div>
+                                        <% } break; } %>
+                        </div>
+                        <% } %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var reportdata = <%- JSON.stringify(reportdata) %>;
+        for (var question of reportdata) {
+            switch (question.type) {
+                case 'rating':
+                case 'boolean':
+                case 'imagepicker':
+                case 'radiogroup':
+                case 'dropdown':
+                    var paiconfig = {
+                        type: 'pie',
+                        data: {
+                            datasets: [{
+                                data: question.percent,
+                                backgroundColor: [
+                                    window.chartColors.red,
+                                    window.chartColors.orange,
+                                    window.chartColors.yellow,
+                                    window.chartColors.green,
+                                    window.chartColors.blue,
+                                ],
+                                label: 'Dataset 1'
+                            }],
+                            labels: question.choices
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    };
+                    var paictx = document.getElementById('pai-chart-' + question.name).getContext('2d');
+                    new Chart(paictx, paiconfig);
+
+                    var lineconfig = {
+                        type: 'line',
+                        data: {
+                            labels: question.choices,
+                            datasets: [{
+                                label: '',
+                                backgroundColor: window.chartColors.red,
+                                borderColor: window.chartColors.red,
+                                data: question.count,
+                                fill: false,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: 'Responses Chart'
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false,
+                            },
+                            hover: {
+                                mode: 'nearest',
+                                intersect: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Choices'
+                                    }
+                                }],
+                                yAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Responses'
+                                    },
+                                    ticks: {
+                                        beginAtZero: true,
+                                        callback: function(value) {
+                                            if (value % 1 === 0) {
+                                                return value;
+                                            }
+                                        }
+                                    }
+                                }]
+                            }
+                        }
+                    };
+                    var linectx = document.getElementById('line-chart-' + question.name).getContext('2d');
+                    new Chart(linectx, lineconfig);
+                    break;
+                case 'matrix':
+                    for (let row of question.rows) {
+                        var paiconfig = {
+                            type: 'pie',
+                            data: {
+                                datasets: [{
+                                    data: row.percent,
+                                    backgroundColor: [
+                                        window.chartColors.red,
+                                        window.chartColors.orange,
+                                        window.chartColors.yellow,
+                                        window.chartColors.green,
+                                        window.chartColors.blue,
+                                    ],
+                                    label: 'Dataset 1'
+                                }],
+                                labels: question.choices
+                            },
+                            options: {
+                                responsive: true
+                            }
+                        };
+                        var ctx = document.getElementById('pai-chart-' + row.name).getContext('2d');
+                        new Chart(ctx, paiconfig);
+
+                        var lineconfig = {
+                            type: 'line',
+                            data: {
+                                labels: question.choices,
+                                datasets: [{
+                                    label: '',
+                                    backgroundColor: window.chartColors.red,
+                                    borderColor: window.chartColors.red,
+                                    data: row.count,
+                                    fill: false,
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                title: {
+                                    display: true,
+                                    text: 'Responses Chart'
+                                },
+                                tooltips: {
+                                    mode: 'index',
+                                    intersect: false,
+                                },
+                                hover: {
+                                    mode: 'nearest',
+                                    intersect: true
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Choices'
+                                        }
+                                    }],
+                                    yAxes: [{
+                                        display: true,
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Responses'
+                                        },
+                                        ticks: {
+                                            beginAtZero: true,
+                                            callback: function(value) {
+                                                if (value % 1 === 0) {
+                                                    return value;
+                                                }
+                                            }
+                                        }
+                                    }]
+                                }
+                            }
+                        };
+                        var linectx = document.getElementById('line-chart-' + row.name).getContext('2d');
+                        new Chart(linectx, lineconfig);
+                    }
+                    break;
+            }
+            console.log(question);
+        }
+    </script>
